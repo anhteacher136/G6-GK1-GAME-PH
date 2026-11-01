@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>English 6 – Đường đua ôn thi giữa kì</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1D3A8A; --ink-soft:#4A62A8; --orange:#F07A1A; --sun:#FFC93C; --mint:#2FB67C; --berry:#E2456B;
+  --bg:#EAF3FF; --grid:#D5E5FB; --card:#FFFFFF; --text:#1B2550; --muted:#5C6890; --line:#C9D8F2;
+  --ok:#22A06B; --bad:#E04848; --shadow:0 4px 0 rgba(29,58,138,.18);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#9DB6FF; --ink-soft:#7F95D6; --bg:#101935; --grid:#18244A; --card:#1A2550; --text:#EEF2FF; --muted:#A9B5DA; --line:#2C3A6E;
+    --shadow:0 4px 0 rgba(0,0,0,.35); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#9DB6FF; --ink-soft:#7F95D6; --bg:#101935; --grid:#18244A; --card:#1A2550; --text:#EEF2FF; --muted:#A9B5DA; --line:#2C3A6E;
+  --shadow:0 4px 0 rgba(0,0,0,.35); color-scheme: dark;
+}
+*{box-sizing:border-box}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font-family:'Baloo 2','Segoe UI',Tahoma,sans-serif;color:var(--text);background:var(--bg);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;min-height:100vh;font-size:18px;line-height:1.4}
+button{font-family:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+h1,h2,h3{margin:0;line-height:1.15;color:var(--ink)}
+.hidden{display:none!important}
+
+/* ---------- track (the memorable thing) ---------- */
+.track{background:var(--card);border:3px solid var(--ink);border-radius:18px;padding:10px 14px 6px;box-shadow:var(--shadow);margin-bottom:16px}
+.track-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
+.track-head h2{font-size:20px}
+.track-head small{color:var(--muted);font-size:15px}
+.lane{display:grid;grid-template-columns:150px 1fr 92px;align-items:center;gap:10px;padding:4px 0;border-top:2px dashed var(--line)}
+.lane:first-of-type{border-top:none}
+.lane.turn .tname{background:var(--sun);color:#1B2550}
+.tname{font-weight:800;font-size:17px;padding:2px 10px;border-radius:999px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.road{position:relative;height:38px;border-radius:10px;background:repeating-linear-gradient(90deg,transparent 0 22px,var(--line) 22px 34px) center/100% 3px no-repeat, var(--bg)}
+.road::after{content:"🏁";position:absolute;right:-4px;top:2px;font-size:26px}
+.car{position:absolute;top:1px;left:0;font-size:30px;transition:left .8s cubic-bezier(.3,1.6,.5,1);transform:scaleX(-1)}
+.pts{display:flex;align-items:center;gap:4px;justify-content:flex-end}
+.pts b{font-size:24px;min-width:34px;text-align:right;color:var(--ink)}
+.mini{width:26px;height:26px;border-radius:8px;border:2px solid var(--line);background:var(--card);color:var(--text);font-weight:800;line-height:1;padding:0}
+.mini:hover{border-color:var(--ink)}
+
+/* ---------- home ---------- */
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start}
+.panel{background:var(--card);border:3px solid var(--ink);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.title{font-size:clamp(34px,5vw,56px);font-weight:800;color:var(--ink);letter-spacing:-.5px}
+.title span{display:block;font-size:.45em;color:var(--orange);letter-spacing:0}
+.sub{color:var(--muted);margin:8px 0 14px}
+.games{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.game{border:3px solid var(--ink);border-radius:16px;background:var(--card);color:var(--text);padding:14px;text-align:left;box-shadow:var(--shadow);transition:transform .12s}
+.game:hover{transform:translateY(-3px)}
+.game:active{transform:translateY(1px);box-shadow:none}
+.game .ic{font-size:40px}
+.game h3{font-size:22px;margin:4px 0}
+.game p{margin:0;color:var(--muted);font-size:15px}
+.teams label{display:flex;align-items:center;gap:8px;margin:6px 0}
+.teams input{flex:1;font:inherit;font-size:17px;padding:6px 10px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text)}
+.dot{width:18px;height:18px;border-radius:50%;flex:none}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:3px solid var(--ink);background:var(--orange);color:#fff;font-weight:800;font-size:18px;padding:8px 18px;border-radius:12px;box-shadow:var(--shadow)}
+.btn.ghost{background:var(--card);color:var(--ink)}
+.btn.small{font-size:15px;padding:4px 12px;border-width:2px}
+.btn:active{transform:translateY(2px);box-shadow:none}
+.seg button{border:2px solid var(--ink);background:var(--card);color:var(--ink);font-weight:700;padding:4px 12px;border-radius:999px;font-size:15px}
+.seg button.on{background:var(--ink);color:var(--card)}
+
+/* ---------- mystery boxes ---------- */
+.bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.bar h2{font-size:26px}
+.boxes{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.box{aspect-ratio:1.75;border:3px solid var(--ink);border-radius:14px;font-size:clamp(22px,3vw,34px);font-weight:800;color:#fff;box-shadow:var(--shadow);transition:transform .15s}
+.box:hover{transform:rotate(-3deg) scale(1.04)}
+.box.done{background:var(--line)!important;color:var(--muted);box-shadow:none;cursor:default;transform:none;font-size:22px}
+.c0{background:var(--orange)}.c1{background:#3E7BFA}.c2{background:var(--mint)}.c3{background:var(--berry)}.c4{background:#8B5CF6}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(10,20,50,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:20}
+.sheet{background:var(--card);border:4px solid var(--ink);border-radius:20px;max-width:880px;width:100%;max-height:92vh;overflow:auto;padding:20px 22px;box-shadow:0 8px 0 rgba(0,0,0,.25);animation:pop .25s ease-out}
+@keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.tag{display:inline-block;background:var(--sun);color:#1B2550;font-weight:800;border-radius:999px;padding:0 12px;font-size:15px}
+.q{font-size:clamp(22px,2.6vw,30px);font-weight:700;margin:10px 0 14px;color:var(--text)}
+.q u{text-decoration-thickness:3px;text-underline-offset:4px;color:var(--orange)}
+.passage{background:var(--bg);border-left:6px solid var(--ink-soft);border-radius:10px;padding:10px 14px;font-size:17px;margin-bottom:12px;max-height:34vh;overflow:auto}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{border:3px solid var(--ink);background:var(--card);color:var(--text);border-radius:14px;padding:10px 14px;font-size:clamp(18px,2vw,24px);font-weight:600;text-align:left}
+.opt b{display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;border-radius:50%;background:var(--ink);color:var(--card);margin-right:8px;font-size:18px}
+.opt u{text-decoration-thickness:3px;text-underline-offset:4px}
+.opt.right{background:var(--ok);color:#fff;border-color:var(--ok)}
+.opt.wrong{background:var(--bad);color:#fff;border-color:var(--bad);animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.why{margin-top:12px;padding:10px 14px;border-radius:12px;background:var(--bg);font-size:17px;color:var(--text)}
+.answer{font-size:clamp(22px,2.6vw,30px);font-weight:800;color:var(--ok);margin:10px 0}
+.timer{font-weight:800;font-size:28px;color:var(--ink);min-width:60px;text-align:center}
+.timer.low{color:var(--bad);animation:pulse .5s infinite alternate}
+@keyframes pulse{to{transform:scale(1.15)}}
+.special{text-align:center}
+.special .big{font-size:84px;line-height:1}
+.pick{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+
+/* ---------- memory ---------- */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;perspective:900px}
+.mcard{position:relative;aspect-ratio:2.3;border:none;background:none;padding:0}
+.mcard .in{position:absolute;inset:0;transition:transform .45s;transform-style:preserve-3d}
+.mcard.flip .in,.mcard.got .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border:3px solid var(--ink);border-radius:14px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;padding:6px;text-align:center;font-weight:700;box-shadow:var(--shadow)}
+.front{background:var(--ink);color:var(--sun);font-size:40px}
+.back{background:var(--card);color:var(--text);transform:rotateY(180deg);font-size:clamp(16px,1.9vw,22px)}
+.back.en{color:var(--ink)}
+.mcard.got .back{background:var(--mint);color:#fff;border-color:var(--mint)}
+
+/* ---------- sentence builder ---------- */
+.slot{min-height:76px;border:3px dashed var(--ink-soft);border-radius:16px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--card);margin-bottom:14px}
+.pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:60px}
+.tile{border:3px solid var(--ink);background:var(--sun);color:#1B2550;font-weight:800;font-size:clamp(18px,2.2vw,26px);padding:4px 14px;border-radius:12px;box-shadow:var(--shadow)}
+.slot .tile{background:var(--card);color:var(--text)}
+.slot.ok{border-color:var(--ok);border-style:solid;background:color-mix(in srgb,var(--ok) 14%,var(--card))}
+.slot.no{border-color:var(--bad);border-style:solid;animation:shake .35s}
+.hint{color:var(--muted);font-size:16px}
+
+canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:30}
+.toast{position:fixed;left:50%;top:18px;transform:translateX(-50%);background:var(--ink);color:var(--card);font-weight:800;padding:8px 18px;border-radius:999px;z-index:40;font-size:20px}
+
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr}
+  .games{grid-template-columns:1fr}
+  .boxes{grid-template-columns:repeat(5,1fr)}
+  .opts{grid-template-columns:1fr}
+  .cards{grid-template-columns:repeat(4,1fr)}
+  .lane{grid-template-columns:96px 1fr 82px}
+}
+@media (max-width:520px){
+  .boxes{grid-template-columns:repeat(4,1fr)}
+  .cards{grid-template-columns:repeat(3,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<div class="wrap">
+  <div id="trackBox" class="track hidden" aria-live="polite"></div>
+
+  <!-- HOME -->
+  <section id="home">
+    <div class="hero">
+      <div class="panel">
+        <div class="title">Đường đua English 6<span>Ôn thi giữa kì 1 · Unit 1 – 3</span></div>
+        <p class="sub">Mỗi câu đúng giúp xe của đội tiến gần vạch đích. Đội nào về đích trước – hoặc nhiều điểm nhất khi hết giờ – là đội thắng.</p>
+        <div class="games">
+          <button class="game" data-go="boxes"><div class="ic">🎁</div><h3>Hộp bí mật</h3><p>30 hộp: phát âm, ngữ pháp, từ vựng, đọc hiểu… và vài hộp may rủi.</p></button>
+          <button class="game" data-go="memory"><div class="ic">🃏</div><h3>Lật thẻ ghép từ</h3><p>Ghép từ tiếng Anh với nghĩa tiếng Việt của Unit 1, 2, 3.</p></button>
+          <button class="game" data-go="builder"><div class="ic">🧩</div><h3>Xếp câu</h3><p>Chạm vào các mảnh từ theo đúng thứ tự để tạo câu hoàn chỉnh.</p></button>
+        </div>
+      </div>
+      <div class="panel teams">
+        <h2 style="font-size:24px">Các đội chơi</h2>
+        <div class="row seg" style="margin:8px 0" id="nTeams">
+          <span class="hint">Số đội:</span>
+          <button data-n="2">2</button><button data-n="3">3</button><button data-n="4">4</button>
+        </div>
+        <div id="teamInputs"></div>
+        <div class="row" style="margin-top:8px">
+          <span class="hint">Điểm về đích:</span>
+          <div class="seg row" id="goalSeg"><button data-g="20">20</button><button data-g="30">30</button><button data-g="40">40</button></div>
+        </div>
+        <div class="row" style="margin-top:14px">
+          <button class="btn ghost small" id="resetScores">Xoá điểm, chơi lại</button>
+          <button class="btn ghost small" id="soundBtn">🔊 Âm thanh: bật</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOXES -->
+  <section id="boxes" class="hidden">
+    <div class="bar"><h2>🎁 Hộp bí mật</h2>
+      <div class="row"><span class="hint" id="turnHint"></span><button class="btn ghost small" id="newBoxes">Bộ hộp mới</button><button class="btn small" data-home>Về trang chính</button></div></div>
+    <div class="boxes" id="boxGrid"></div>
+  </section>
+
+  <!-- MEMORY -->
+  <section id="memory" class="hidden">
+    <div class="bar"><h2>🃏 Lật thẻ ghép từ</h2>
+      <div class="row seg" id="unitSeg"><button data-u="1">Unit 1</button><button data-u="2">Unit 2</button><button data-u="3">Unit 3</button><button data-u="0">Trộn</button>
+        <button class="btn small" data-home>Về trang chính</button></div></div>
+    <p class="hint" id="memHint">Đội đang chơi lật 2 thẻ. Ghép đúng được +1 điểm và chơi tiếp; sai thì chuyển lượt.</p>
+    <div class="cards" id="cardGrid"></div>
+  </section>
+
+  <!-- BUILDER -->
+  <section id="builder" class="hidden">
+    <div class="bar"><h2>🧩 Xếp câu</h2>
+      <div class="row"><span class="timer" id="bTimer">45</span><span class="hint" id="bCount"></span><button class="btn small" data-home>Về trang chính</button></div></div>
+    <p class="hint" id="bTurn"></p>
+    <div class="slot" id="slot"></div>
+    <div class="pool" id="pool"></div>
+    <div class="row" style="justify-content:center;margin-top:16px">
+      <button class="btn ghost" id="bUndo">↩ Bỏ từ cuối</button>
+      <button class="btn" id="bCheck">Kiểm tra</button>
+      <button class="btn ghost" id="bShow">Xem đáp án</button>
+      <button class="btn ghost" id="bNext">Câu tiếp</button>
+    </div>
+    <p class="why hidden" id="bAns" style="text-align:center"></p>
+  </section>
+</div>
+
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true"><div class="sheet" id="sheet"></div></div>
+
+<script>
+/* =================== DATA (from G6 Phu Hoa revision worksheet) =================== */
+const P_SCHOOL = 'My new school (1) ______ in a quiet place not far from the city centre. It (2) ______ three buildings and a large yard. This year, there are 26 (3) ______ with more than 800 students at my school. Most students (4) ______ hard-working and kind. My school has about 65 teachers. They are all helpful (5) ______ friendly. My school has different clubs: Dancing, English, Arts, Football and Basketball. I like English the best, so I am in the English club. I love my school because it is a good school.';
+const P_SARAH = 'This is my friend Sarah. She’s a nice person, and I’m sure you’ll like her. Sarah is a girl of average height with long, black hair. She has a big, friendly smile that makes people happy.<br>I like Sarah because she’s friendly and loves talking to people. She’s not shy. Sarah tells funny stories and can make everyone laugh.<br>In school, Sarah is a good student. She listens to the teacher and doesn’t talk too much in class. When we work in groups, she’s a great team player. She helps everyone and makes sure our group work is good.<br>Sarah lives near the school, so she goes home after class. In the evenings, she plays games with her friends and is great at hide-and-seek.<br>In her free time, Sarah enjoys reading adventure books. She loves going to the park with friends and enjoys music; she sings very well. One day, Sarah wants to be a teacher to help kids learn and have fun at school.';
+
+const MC = [
+ // Phonetics – pronunciation
+ {c:'Phát âm',q:'Chọn từ có phần gạch chân phát âm khác:',o:['c<u>o</u>me','m<u>o</u>nth','m<u>o</u>ther','<u>o</u>pen'],a:3,w:'open /əʊ/; come, month, mother /ʌ/.'},
+ {c:'Phát âm',q:'Chọn từ có phần gạch chân phát âm khác:',o:['sm<u>a</u>rt','<u>a</u>rt','c<u>a</u>rd','b<u>a</u>g'],a:3,w:'bag /æ/; smart, art, card /ɑː/.'},
+ {c:'Phát âm',q:'Chọn từ có phần gạch chân phát âm khác:',o:['br<u>o</u>ther','jud<u>o</u>','g<u>o</u>ing','r<u>o</u>de'],a:0,w:'brother /ʌ/; judo, going, rode /əʊ/.'},
+ {c:'Phát âm',q:'Chọn từ có phần gạch chân phát âm khác:',o:['market<u>s</u>','drawer<u>s</u>','bed<u>s</u>','school<u>s</u>'],a:0,w:'markets /s/ (tận cùng /t/); còn lại /z/.'},
+ {c:'Phát âm',q:'Chọn từ có phần gạch chân phát âm khác:',o:['brother<u>s</u>','grandparent<u>s</u>','uncle<u>s</u>','father<u>s</u>'],a:1,w:'grandparents /s/ (tận cùng /t/); còn lại /z/.'},
+ {c:'Phát âm',q:'Chọn từ có phần gạch chân phát âm khác:',o:['pillow<u>s</u>','wall<u>s</u>','room<u>s</u>','book<u>s</u>'],a:3,w:'books /s/ (tận cùng /k/); còn lại /z/.'},
+ {c:'Phát âm',q:'Chọn từ có phần gạch chân phát âm khác:',o:['n<u>e</u>ck','l<u>e</u>g','fing<u>e</u>r','<u>e</u>lbow'],a:2,w:'finger /ə/; neck, leg, elbow /e/.'},
+ {c:'Phát âm',q:'Chọn từ có phần gạch chân phát âm khác:',o:['light<u>s</u>','villa<u>s</u>','table<u>s</u>','window<u>s</u>'],a:0,w:'lights /s/ (tận cùng /t/); còn lại /z/.'},
+ {c:'Phát âm',q:'Chọn từ có phần gạch chân phát âm khác:',o:['bea<u>u</u>tiful','r<u>u</u>bber','comp<u>u</u>ter','calc<u>u</u>lator'],a:1,w:'rubber /ʌ/; beautiful, computer, calculator /juː/ – /jʊ/.'},
+ {c:'Phát âm',q:'Chọn từ có phần gạch chân phát âm khác:',o:['f<u>u</u>nny','s<u>u</u>bjects','s<u>u</u>n','st<u>u</u>dent'],a:3,w:'student /juː/; funny, subjects, sun /ʌ/.'},
+ // Stress
+ {c:'Trọng âm',q:'Chọn từ có trọng âm khác:',o:['toilet','library','kitchen','museum'],a:3,w:'museum nhấn âm 2; còn lại nhấn âm 1.'},
+ {c:'Trọng âm',q:'Chọn từ có trọng âm khác:',o:['behind','dishwasher','cupboard','wardrobe'],a:0,w:'behind nhấn âm 2; còn lại nhấn âm 1.'},
+ {c:'Trọng âm',q:'Chọn từ có trọng âm khác:',o:['apartment','villa','garden','sporty'],a:0,w:'apartment nhấn âm 2; còn lại nhấn âm 1.'},
+ {c:'Trọng âm',q:'Chọn từ có trọng âm khác:',o:['attic','international','kitchen','confident'],a:1,w:'international nhấn âm 3; còn lại nhấn âm 1.'},
+ {c:'Trọng âm',q:'Chọn từ có trọng âm khác:',o:['television','talkative','creative','cooker'],a:2,w:'creative nhấn âm 2; còn lại nhấn âm 1.'},
+ // Grammar & vocabulary
+ {c:'Ngữ pháp',q:'Let’s ______ badminton together in the schoolyard at break time.',o:['play','playing','to play','to playing'],a:0,w:'Let’s + V nguyên mẫu.'},
+ {c:'Từ vựng',q:'Phong and Duy are in the same class at school. They are ______.',o:['students','classmates','neighbors','cousin'],a:1,w:'classmates = bạn cùng lớp.'},
+ {c:'Từ vựng',q:'I think Daisy looks very pretty with her long black ______.',o:['eyes','shoulder','cheek','hair'],a:3,w:'long black hair = tóc đen dài.'},
+ {c:'Từ vựng',q:'My cousin lives and studies in a ______ school, so she only comes home at weekends.',o:['international','garden','private','boarding'],a:3,w:'boarding school = trường nội trú.'},
+ {c:'Ngữ pháp',q:'What time ______ your parents ______ lunch every day?',o:['does/ have','does/ play','do/ have','do/ play'],a:2,w:'"your parents" số nhiều → do; have lunch = ăn trưa.'},
+ {c:'Ngữ pháp',q:'Anna ______ a good student. She ______ their homework after school.',o:['is/ does always','are/ always does','isn’t/ always does','is/ always does'],a:3,w:'Anna → is; trạng từ tần suất đứng trước động từ thường: always does.'},
+ {c:'Từ vựng',q:'My favourite ______ is Science. I love doing physics experiments.',o:['school things','subject','uniform','school activity'],a:1,w:'subject = môn học.'},
+ {c:'Ngữ pháp',q:'There ______ a swimming pool and two basketball courts in our school.',o:['aren’t','is','am','are'],a:1,w:'Danh từ đứng ngay sau "There" là "a swimming pool" (số ít) → is.'},
+ {c:'Ngữ pháp',q:'I’m ______ a party next weekend. Would you like to come?',o:['having','have','has','to have'],a:0,w:'am + V-ing: have a party → having.'},
+ {c:'Từ vựng',q:'James ______ letters from his friends every day.',o:['sees','books','receives','writes'],a:2,w:'receive letters from sb = nhận thư từ ai.'},
+ {c:'Ngữ pháp',q:'In my living room, there is a table ______ the sofa and the TV.',o:['between','next to','under','in'],a:0,w:'between … and … = ở giữa.'},
+ {c:'Từ vựng',q:'You can find spoons and chopsticks in the ______.',o:['lamp','fridge','cupboard','wardrobe'],a:2,w:'cupboard = tủ đựng bát đĩa.'},
+ {c:'Ngữ pháp',q:'David is ______ brother. I can see him in the family photo standing next to her.',o:['Linda’','Linda’s','Lindas','Linda of'],a:1,w:'Sở hữu cách số ít: Linda’s brother.'},
+ {c:'Từ vựng',q:'I put all my dresses and clothes in a ______.',o:['microwave','fridge','lamp','wardrobe'],a:3,w:'wardrobe = tủ quần áo.'},
+ {c:'Ngữ pháp',q:'How about ______ some pictures on the wall?',o:['to put','put','putting','being put'],a:2,w:'How about + V-ing?'},
+ {c:'Từ vựng',q:'We should go to the ______ to buy some food and clothes.',o:['stilt house','kitchen','hall','department store'],a:3,w:'department store = cửa hàng bách hoá.'},
+ {c:'Ngữ pháp',q:'______ they ______ about their new friends at the moment?',o:['Are/ talk','Are/ talking','Is/ talking','Is/ talk'],a:1,w:'"at the moment" → hiện tại tiếp diễn: Are they talking…?'},
+ {c:'Từ vựng',q:'Ms. Smith is baking a cake in the ______ for my birthday.',o:['bathroom','dining room','kitchen','bedroom'],a:2,w:'Nướng bánh ở nhà bếp: kitchen.'},
+ {c:'Ngữ pháp',q:'You should never stand ______ a tree when it is raining.',o:['at','under','between','on'],a:1,w:'under a tree = dưới gốc cây.'},
+ {c:'Từ vựng',q:'My best friend is very ______. He plays football and basketball very well.',o:['friendly','sporty','lovely','funny'],a:1,w:'sporty = yêu thể thao.'},
+ {c:'Từ vựng',q:'There are so many new words in the passage. Can I use a ______ to help me?',o:['calculator','ruler','dictionary','notebook'],a:2,w:'dictionary = từ điển (tra từ mới).'},
+ {c:'Từ vựng',q:'Their ______ is very good. They were close friends when they were students.',o:['friend','friendly','friendship','unfriendly'],a:2,w:'Sau "Their" cần danh từ: friendship (tình bạn).'},
+ {c:'Ngữ pháp',q:'My parents and I ______ our favorite film right now.',o:['are watching','watch','am watching','watches'],a:0,w:'"right now" → hiện tại tiếp diễn; chủ ngữ số nhiều → are watching.'},
+ {c:'Từ vựng',q:'My brother can do all the difficult Math exercises. He is a(n) ______ student.',o:['hard','intelligent','handsome','staying'],a:1,w:'intelligent = thông minh.'},
+ {c:'Từ vựng',q:'My mum always asks me to wash my ______ before meals.',o:['hair','arms','hands','teeth'],a:2,w:'wash your hands before meals = rửa tay trước khi ăn.'},
+ // Exchanges
+ {c:'Giao tiếp',q:'Michael: “How is your first day at school?” – Eric: “______”',o:['By bicycle.','Five days a week','That sounds great.','Really exciting.'],a:3,w:'"How is…?" hỏi cảm nhận → Really exciting.'},
+ {c:'Giao tiếp',q:'John: “How about driving to the countryside for the weekend?” – Ann: “______”',o:['Not at all.','Sure. Here you are.','Thanks a lot.','That’s a good idea.'],a:3,w:'Đáp lại lời đề nghị: That’s a good idea.'},
+ {c:'Giao tiếp',q:'Andrew: “How do you usually go to school?” – Lily: “______”',o:['Yes, I do.','I go on foot.','I go to school every day.','I go to school at 6 o’clock.'],a:1,w:'"How" hỏi phương tiện → I go on foot.'},
+ {c:'Giao tiếp',q:'Hoa: “Can I borrow your pencil sharpener, please?” – Hung: “______”',o:['That sounds great.','Thank you.','Of course. Here you are.','You’re welcome.'],a:2,w:'Đồng ý cho mượn: Of course. Here you are.'},
+ // Synonyms / antonyms
+ {c:'Đồng nghĩa',q:'In our group of friends, Jenny is always very <u>kind</u>.',o:['rude','nice','quiet','messy'],a:1,w:'kind ≈ nice.'},
+ {c:'Đồng nghĩa',q:'Mark is a <u>smart</u> guy; he can solve math problems quickly.',o:['kind','lazy','clever','noisy'],a:2,w:'smart ≈ clever.'},
+ {c:'Đồng nghĩa',q:'Students <u>put on</u> their uniforms when they go to school.',o:['give','get','take','wear'],a:3,w:'put on ≈ wear.'},
+ {c:'Trái nghĩa',q:'Sarah is a <u>hard-working</u> student. She always completes her homework or studies for her exams.',o:['funny','polite','shy','lazy'],a:3,w:'hard-working ≠ lazy.'},
+ {c:'Trái nghĩa',q:'He walked around the room to find her sitting on the ground <u>behind</u> her bed.',o:['under','between','in front of','at'],a:2,w:'behind ≠ in front of.'},
+ {c:'Trái nghĩa',q:'She has grey, short, <u>curly</u> hair, and was wearing glasses and a purple-coloured jacket.',o:['long','straight','blonde','wavy'],a:1,w:'curly ≠ straight.'},
+ // Cloze MY SCHOOL
+ {c:'Đọc điền từ',p:P_SCHOOL,q:'MY SCHOOL – chỗ trống (1):',o:['are','is','am','aren’t'],a:1,w:'"My new school" số ít → is.'},
+ {c:'Đọc điền từ',p:P_SCHOOL,q:'MY SCHOOL – chỗ trống (2):',o:['having','don’t have','has','is having'],a:2,w:'"It" + has (sở hữu, không dùng tiếp diễn).'},
+ {c:'Đọc điền từ',p:P_SCHOOL,q:'MY SCHOOL – chỗ trống (3):',o:['classes','schools','stories','class'],a:0,w:'26 + danh từ số nhiều: classes.'},
+ {c:'Đọc điền từ',p:P_SCHOOL,q:'MY SCHOOL – chỗ trống (4):',o:['don’t','doesn’t','is','are'],a:3,w:'"Most students" số nhiều + are + tính từ.'},
+ {c:'Đọc điền từ',p:P_SCHOOL,q:'MY SCHOOL – chỗ trống (5):',o:['and','no','not','be'],a:0,w:'helpful and friendly.'},
+ // Reading Sarah
+ {c:'Đọc hiểu',p:P_SARAH,q:'What color is Sarah’s hair?',o:['Black','Blonde','Brown','Red'],a:0,w:'"long, black hair".'},
+ {c:'Đọc hiểu',p:P_SARAH,q:'Why does the writer like Sarah?',o:['Because she is shy and quiet.','Because she is funny and friendly.','Because she never talks to anyone.','Because she’s not friendly.'],a:1,w:'"she’s friendly… tells funny stories".'},
+ {c:'Đọc hiểu',p:P_SARAH,q:'What is Sarah like when working in groups?',o:['She doesn’t help anyone.','She doesn’t do any work.','She is a good team player and helps everyone.','She doesn’t like working with others.'],a:2,w:'"she’s a great team player. She helps everyone".'},
+ {c:'Đọc hiểu',p:P_SARAH,q:'What does Sarah like to do in her free time?',o:['Go out with her friends.','Watch TV all day.','Study all the time.','Eat a lot of candy.'],a:0,w:'"She loves going to the park with friends".'},
+ {c:'Đọc hiểu',p:P_SARAH,q:'What does Sarah want to be in the future?',o:['A doctor','A teacher','A musician','A chef'],a:1,w:'"Sarah wants to be a teacher".'},
+];
+const OPEN = [
+ {c:'Chia động từ',q:'They usually ______ (play) football and basketball at school.',a:'play'},
+ {c:'Chia động từ',q:'My father ______ (not read) the newspaper every morning.',a:'doesn’t read'},
+ {c:'Chia động từ',q:'Brian ______ (write) a letter right now.',a:'is writing'},
+ {c:'Chia động từ',q:'______ she ______ (have) English, Maths and Science on Monday?',a:'Does … have'},
+ {c:'Chia động từ',q:'Be quiet! The children ______ (study) in the room.',a:'are studying'},
+ {c:'Chia động từ',q:'______ (Bob/ watch) the news on TV at present?',a:'Is Bob watching'},
+ {c:'Chia động từ',q:'My parents ______ (talk) to the teacher at the moment.',a:'are talking'},
+ {c:'Chia động từ',q:'Where is Mai? – She ______ (skip) with her friends in the schoolyard.',a:'is skipping'},
+ {c:'Chia động từ',q:'She never ______ (do) her homework.',a:'does'},
+ {c:'Chia động từ',q:'There ______ (be) a bed, a bookcase, a table and two chairs in my room.',a:'is'},
+ {c:'Từ loại',q:'Ella is very ______ and gets along well with everyone. (friend)',a:'friendly'},
+ {c:'Từ loại',q:'Please be ______ with those vases. Don’t break them. (care)',a:'careful'},
+ {c:'Từ loại',q:'Alisa is so ______. She talks too much in class. (talk)',a:'talkative'},
+ {c:'Từ loại',q:'Some ______ students do drawings and paintings in the art club. (create)',a:'creative'},
+ {c:'Từ loại',q:'The class is ______; students do not stop talking to each other. (noise)',a:'noisy'},
+ {c:'Viết lại câu',q:'Let’s put those new chairs in the dining room.<br>→ How about …',a:'How about putting those new chairs in the dining room?'},
+ {c:'Viết lại câu',q:'The small house does not have a basement.<br>→ There …',a:'There isn’t a basement in the small house.'},
+ {c:'Viết lại câu',q:'They have two cookers in the kitchen.<br>→ There …',a:'There are two cookers in the kitchen.'},
+ {c:'Viết lại câu',q:'His eyes are big and blue.<br>→ He …',a:'He has big blue eyes.'},
+ {c:'Viết lại câu',q:'There are three ceiling fans in our classroom.<br>→ Our classroom …',a:'Our classroom has three ceiling fans.'},
+ {c:'Viết lại câu',q:'The cat is behind the fridge.<br>→ There is a fridge …',a:'There is a fridge in front of the cat.'},
+ {c:'Viết lại câu',q:'The garage is in front of Huy’s house.<br>→ Huy’s house …',a:'Huy’s house is behind the garage.'},
+ {c:'Viết lại câu',q:'Sam listens to music after school. → Câu phủ định?',a:'Sam doesn’t listen to music after school.'},
+ {c:'Viết lại câu',q:'They have Science class every Friday. → Câu hỏi?',a:'Do they have Science class every Friday?'},
+];
+const SPECIAL = [
+ {ic:'⭐',t:'Nhân đôi!',d:'Câu tiếp theo của đội bạn được nhân đôi điểm.',k:'double'},
+ {ic:'🎁',t:'Quà tặng!',d:'Đội bạn được cộng ngay 2 điểm.',k:'gift'},
+ {ic:'🦊',t:'Cáo tinh ranh!',d:'Lấy 1 điểm của một đội khác.',k:'steal'},
+ {ic:'🍌',t:'Trượt vỏ chuối!',d:'Ôi không! Mất lượt này.',k:'skip'},
+ {ic:'🚀',t:'Tên lửa!',d:'Đội bạn được cộng 3 điểm.',k:'rocket'},
+];
+const VOCAB = {
+ 1:[['activity','hoạt động'],['art','nghệ thuật'],['backpack','ba lô'],['boarding school','trường nội trú'],['calculator','máy tính cầm tay'],['classmate','bạn cùng lớp'],['compass','com-pa'],['dictionary','từ điển'],['exercise','bài tập, thể dục'],['international','quốc tế'],['knock','gõ (cửa)'],['library','thư viện'],['notebook','tập vở'],['pencil sharpener','đồ chuốt bút chì'],['playground','sân chơi'],['school garden','vườn trường'],['scissors','cây kéo'],['secondary school','trường cấp 2'],['share','chia sẻ'],['smart','bảnh bao, gọn gàng'],['swimming pool','hồ bơi'],['textbook','sách giáo khoa'],['uniform','đồng phục']],
+ 2:[['apartment','căn hộ'],['attic','gác xép'],['balcony','ban công'],['basement','tầng hầm'],['bathroom','phòng tắm'],['bedroom','phòng ngủ'],['bookshelf','kệ sách'],['ceiling','trần nhà'],['chest of drawers','tủ có ngăn kéo'],['cooker','bếp'],['cottage','nhà tranh'],['country house','nhà ở vùng quê'],['cupboard','tủ đựng bát đĩa'],['curtain','màn cửa'],['department store','cửa hàng bách hoá'],['dining room','phòng ăn'],['dishwasher','máy rửa chén'],['farmhouse','nhà trang trại'],['furniture','nội thất'],['gate','cổng'],['guest room','phòng cho khách'],['hall','sảnh'],['kitchen','nhà bếp'],['lamp','đèn bàn'],['living room','phòng khách'],['microwave','lò vi sóng'],['pillow','gối'],['shower','vòi sen'],['sink','bồn rửa'],['stilt house','nhà sàn'],['town house','nhà phố'],['villa','biệt thự'],['wall','tường'],['wardrobe','tủ quần áo'],['window','cửa sổ']],
+ 3:[['active','năng động'],['appearance','diện mạo'],['blonde','(tóc) hoe vàng'],['busy','bận rộn'],['careful','cẩn thận'],['caring','chu đáo'],['chubby','mũm mĩm'],['clever','lanh lợi'],['confident','tự tin'],['creative','sáng tạo'],['curly','xoăn'],['easy-going','dễ tính'],['friendly','thân thiện'],['funny','khôi hài'],['glasses','mắt kính'],['hard-working','chăm chỉ'],['helpful','hay giúp đỡ'],['honest','thật thà'],['kind','tốt bụng'],['patient','kiên nhẫn'],['personality','tính cách'],['reliable','đáng tin'],['rosy','ửng hồng'],['shy','xấu hổ, nhút nhát'],['skin','da'],['slim','mảnh khảnh'],['sociable','hoà đồng'],['sporty','yêu thể thao'],['straight','thẳng'],['talkative','nói nhiều']]
+};
+const SENT = [
+ 'How is your first week at secondary school ?',
+ 'How many lessons do you have on Friday ?',
+ 'Are you doing your maths homework ?',
+ 'We don’t have English classes at school today .',
+ 'How about putting those new chairs in the dining room ?',
+ 'There are two cookers in the kitchen .',
+ 'Our classroom has three ceiling fans .',
+ 'Huy’s house is behind the garage .',
+ 'He has big blue eyes .',
+ 'Do they have Science class every Friday ?',
+ 'Sam doesn’t listen to music after school .',
+ 'My cousin studies in a boarding school .',
+ 'Let’s play badminton in the schoolyard .',
+ 'Be quiet! The children are studying in the room .',
+ 'She is always kind and helpful .',
+ 'I usually ride my bike to school .',
+];
+
+/* =================== STATE =================== */
+const COLORS=['#F07A1A','#3E7BFA','#2FB67C','#E2456B'];
+const CARS=['🚗','🚙','🏎️','🚌'];
+const S={n:2,names:['Đội Cam','Đội Xanh','Đội Lá','Đội Hồng'],score:[0,0,0,0],goal:30,turn:0,sound:true,double:false};
+try{const s=JSON.parse(localStorage.getItem('g6race')||'null'); if(s) Object.assign(S,s,{double:false});}catch(e){}
+const save=()=>{try{localStorage.setItem('g6race',JSON.stringify(S))}catch(e){}};
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+
+/* sound */
+let AC;
+function tone(f,d=.12,type='sine',v=.18,when=0){if(!S.sound)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(AC.destination);const t=AC.currentTime+when;o.start(t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.stop(t+d+.02)}catch(e){}}
+const sfx={ok(){[523,659,784,1046].forEach((f,i)=>tone(f,.16,'triangle',.18,i*.08))},bad(){tone(220,.25,'sawtooth',.12);tone(170,.3,'sawtooth',.1,.12)},tick(){tone(880,.05,'square',.05)},pop(){tone(600,.08,'triangle',.15);tone(900,.08,'triangle',.12,.06)},win(){[523,659,784,659,784,1046].forEach((f,i)=>tone(f,.2,'triangle',.18,i*.12))}};
+
+/* confetti */
+const cv=$('#fx'),cx=cv.getContext('2d');let parts=[];
+function resize(){cv.width=innerWidth;cv.height=innerHeight}addEventListener('resize',resize);resize();
+function confetti(n=120){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;for(let i=0;i<n;i++)parts.push({x:innerWidth/2,y:innerHeight/3,vx:(Math.random()-.5)*14,vy:Math.random()*-12-4,c:COLORS[i%4],s:6+Math.random()*6,r:Math.random()*6,life:90});if(parts.length===n)loop()}
+function loop(){cx.clearRect(0,0,cv.width,cv.height);parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.35;p.r+=.2;p.life--;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);cx.restore()});parts=parts.filter(p=>p.life>0);if(parts.length)requestAnimationFrame(loop);else cx.clearRect(0,0,cv.width,cv.height)}
+function toast(m){const d=document.createElement('div');d.className='toast';d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),1600)}
+
+/* =================== TRACK =================== */
+function renderTrack(){
+  const box=$('#trackBox');
+  let h=`<div class="track-head"><h2>🏁 Đường đua</h2><small>Về đích: ${S.goal} điểm · Lượt: <b style="color:${COLORS[S.turn]}">${esc(S.names[S.turn])}</b>${S.double?' · ⭐ x2':''}</small></div>`;
+  for(let i=0;i<S.n;i++){
+    const pct=Math.min(1,Math.max(0,S.score[i]/S.goal));
+    h+=`<div class="lane ${i===S.turn?'turn':''}"><span class="tname" style="color:${i===S.turn?'#1B2550':COLORS[i]}">${esc(S.names[i])}</span>
+    <div class="road"><span class="car" style="left:calc(${pct*100}% - ${pct*34}px)">${CARS[i]}</span></div>
+    <span class="pts"><button class="mini" aria-label="Trừ 1 điểm ${esc(S.names[i])}" data-adj="${i}" data-v="-1">−</button><b>${S.score[i]}</b><button class="mini" aria-label="Cộng 1 điểm ${esc(S.names[i])}" data-adj="${i}" data-v="1">+</button></span></div>`;
+  }
+  box.innerHTML=h;
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function addPts(i,v){const before=S.score[i];S.score[i]=Math.max(0,S.score[i]+v);save();renderTrack();if(before<S.goal&&S.score[i]>=S.goal){sfx.win();confetti(220);setTimeout(()=>toast(`🏆 ${S.names[i]} về đích!`),200)}}
+function nextTurn(){S.turn=(S.turn+1)%S.n;save();renderTrack()}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-adj]');if(b){addPts(+b.dataset.adj,+b.dataset.v);sfx.pop()}});
+
+/* =================== NAV =================== */
+function show(id){['home','boxes','memory','builder'].forEach(s=>$('#'+s).classList.toggle('hidden',s!==id));$('#trackBox').classList.toggle('hidden',id==='home');renderTrack();window.scrollTo(0,0);if(id!=='builder')stopTimer()}
+$$('[data-go]').forEach(b=>b.onclick=()=>{readTeams();const g=b.dataset.go;if(g==='boxes'){if(!$('#boxGrid').children.length)newBoxes()}if(g==='memory')newMemory(memUnit);if(g==='builder')newBuilder();show(g)});
+$$('[data-home]').forEach(b=>b.onclick=()=>{show('home');renderHome()});
+
+/* =================== HOME =================== */
+function renderHome(){
+  $$('#nTeams button').forEach(b=>b.classList.toggle('on',+b.dataset.n===S.n));
+  $$('#goalSeg button').forEach(b=>b.classList.toggle('on',+b.dataset.g===S.goal));
+  $('#teamInputs').innerHTML=Array.from({length:S.n},(_,i)=>`<label><span class="dot" style="background:${COLORS[i]}"></span><span style="font-size:22px">${CARS[i]}</span><input value="${esc(S.names[i])}" data-ti="${i}" aria-label="Tên đội ${i+1}" maxlength="18"></label>`).join('');
+  $('#soundBtn').textContent=`🔊 Âm thanh: ${S.sound?'bật':'tắt'}`;
+}
+function readTeams(){$$('[data-ti]').forEach(inp=>{S.names[+inp.dataset.ti]=inp.value.trim()||`Đội ${+inp.dataset.ti+1}`});if(S.turn>=S.n)S.turn=0;save()}
+$$('#nTeams button').forEach(b=>b.onclick=()=>{readTeams();S.n=+b.dataset.n;save();renderHome()});
+$$('#goalSeg button').forEach(b=>b.onclick=()=>{S.goal=+b.dataset.g;save();renderHome()});
+$('#resetScores').onclick=()=>{S.score=[0,0,0,0];S.turn=0;save();$('#boxGrid').innerHTML='';toast('Đã xoá điểm – sẵn sàng chơi lại!')};
+$('#soundBtn').onclick=()=>{S.sound=!S.sound;save();renderHome()};
+
+/* =================== MODAL =================== */
+const modal=$('#modal'),sheet=$('#sheet');
+function openModal(html){sheet.innerHTML=html;modal.classList.remove('hidden');const f=sheet.querySelector('button');f&&f.focus()}
+function closeModal(){modal.classList.add('hidden');stopQTimer()}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.classList.contains('hidden'))closeModal()});
+
+/* =================== MYSTERY BOXES =================== */
+let pool=[],boxData=[];
+function newBoxes(){
+  const mcs=shuffle(MC).slice(0,20).map(x=>({t:'mc',...x})), ops=shuffle(OPEN).slice(0,6).map(x=>({t:'open',...x}));
+  const sp=shuffle(SPECIAL).slice(0,4).map(x=>({t:'sp',...x}));
+  boxData=shuffle([...mcs,...ops,...sp]);
+  $('#boxGrid').innerHTML=boxData.map((_,i)=>`<button class="box c${i%5}" data-b="${i}" aria-label="Hộp số ${i+1}">${i+1}</button>`).join('');
+  $$('#boxGrid .box').forEach(b=>b.onclick=()=>openBox(+b.dataset.b,b));
+}
+$('#newBoxes').onclick=()=>{newBoxes();sfx.pop()};
+let qTimer=null;
+function stopQTimer(){clearInterval(qTimer);qTimer=null}
+function startQTimer(sec,onEnd){stopQTimer();let t=sec;const el=$('#qt');if(!el)return;el.textContent=t;qTimer=setInterval(()=>{t--;if(!$('#qt')){stopQTimer();return}$('#qt').textContent=t;$('#qt').classList.toggle('low',t<=5);if(t<=5&&t>0)sfx.tick();if(t<=0){stopQTimer();onEnd&&onEnd()}},1000)}
+function markBox(btn,ic){btn.classList.add('done');btn.disabled=true;btn.textContent=ic}
+function openBox(i,btn){
+  sfx.pop();const d=boxData[i];const team=S.turn;const mult=S.double?2:1;
+  const head=`<div class="row" style="justify-content:space-between"><span class="tag">${d.t==='sp'?'Hộp may rủi':d.c} · Hộp ${i+1}</span><span class="row"><span style="font-weight:800;color:${COLORS[team]}">${CARS[team]} ${esc(S.names[team])}${mult>1?' · ⭐ x2':''}</span><span class="timer" id="qt"></span></span></div>`;
+  if(d.t==='sp'){
+    markBox(btn,d.ic);
+    let extra='';
+    if(d.k==='steal') extra=`<div class="pick">${Array.from({length:S.n},(_,k)=>k).filter(k=>k!==team).map(k=>`<button class="btn small" style="background:${COLORS[k]}" data-steal="${k}">Lấy của ${esc(S.names[k])}</button>`).join('')}</div>`;
+    openModal(`${head}<div class="special"><div class="big">${d.ic}</div><h2 style="font-size:36px;margin:6px 0">${d.t}</h2><p class="q" style="font-size:24px">${d.d}</p>${extra}<div class="pick"><button class="btn" id="spOk">${d.k==='steal'?'Bỏ qua':'Tiếp tục'}</button></div></div>`);
+    if(d.k==='gift'){addPts(team,2);sfx.ok();confetti(80)} if(d.k==='rocket'){addPts(team,3);sfx.win();confetti(140)}
+    if(d.k==='double'){S.double=true;save();sfx.ok()} if(d.k==='skip'){sfx.bad()}
+    $$('[data-steal]').forEach(b=>b.onclick=()=>{const k=+b.dataset.steal;if(S.score[k]>0){addPts(k,-1);addPts(team,1)}sfx.ok();closeModal();if(d.k!=='double')nextTurn()});
+    $('#spOk').onclick=()=>{closeModal();if(d.k!=='double')nextTurn()};
+    return;
+  }
+  const passage=d.p?`<details class="passage" ${d.c==='Đọc hiểu'||d.c==='Đọc điền từ'?'open':''}><summary style="cursor:pointer;font-weight:700">📖 Đoạn văn</summary>${d.p}</details>`:'';
+  if(d.t==='mc'){
+    openModal(`${head}${passage}<div class="q">${d.q}</div><div class="opts">${d.o.map((o,k)=>`<button class="opt" data-o="${k}"><b>${'ABCD'[k]}</b>${o}</button>`).join('')}</div><div id="after"></div>`);
+    const finish=(k)=>{
+      stopQTimer();$$('.opt').forEach(b=>b.disabled=true);
+      $$('.opt')[d.a].classList.add('right');
+      const ok=k===d.a;
+      if(k>=0&&!ok)$$('.opt')[k].classList.add('wrong');
+      if(ok){addPts(team,mult);sfx.ok();confetti()}else sfx.bad();
+      S.double=false;save();
+      $('#after').innerHTML=`<div class="why"><b>${ok?'✔ Chính xác! +'+mult:(k<0?'⏰ Hết giờ!':'✘ Chưa đúng.')}</b> ${d.w||''}</div><div class="pick"><button class="btn" id="goOn">Tiếp tục</button></div>`;
+      $('#goOn').onclick=()=>{closeModal();nextTurn()};$('#goOn').focus();
+      markBox(btn,ok?'✔':'✘');
+    };
+    $$('.opt').forEach(b=>b.onclick=()=>finish(+b.dataset.o));
+    startQTimer(d.p?40:25,()=>finish(-1));
+  } else {
+    openModal(`${head}<div class="q">${d.q}</div><p class="hint">Đội trả lời miệng hoặc viết lên bảng, sau đó bấm “Xem đáp án”.</p><div id="after"><div class="pick"><button class="btn" id="reveal">Xem đáp án</button></div></div>`);
+    const rev=()=>{stopQTimer();$('#after').innerHTML=`<div class="answer">${d.a}</div><div class="pick"><button class="btn" style="background:var(--ok)" id="yes">✔ Đội trả lời đúng (+${mult*2})</button><button class="btn ghost" id="no">✘ Chưa đúng</button></div>`;
+      $('#yes').onclick=()=>{addPts(team,2*mult);sfx.ok();confetti();S.double=false;save();markBox(btn,'✔');closeModal();nextTurn()};
+      $('#no').onclick=()=>{sfx.bad();S.double=false;save();markBox(btn,'✘');closeModal();nextTurn()}};
+    $('#reveal').onclick=rev;startQTimer(40,rev);
+  }
+}
+
+/* =================== MEMORY =================== */
+let memUnit=1,flipped=[],lock=false,pairsLeft=0;
+$$('#unitSeg [data-u]').forEach(b=>b.onclick=()=>{memUnit=+b.dataset.u;newMemory(memUnit);sfx.pop()});
+function newMemory(u){
+  $$('#unitSeg [data-u]').forEach(b=>b.classList.toggle('on',+b.dataset.u===u));
+  const src=u?VOCAB[u]:[...VOCAB[1],...VOCAB[2],...VOCAB[3]];
+  const pick=shuffle(src).slice(0,8);pairsLeft=8;flipped=[];lock=false;
+  const cards=shuffle(pick.flatMap((p,i)=>[{id:i,txt:p[0],en:1},{id:i,txt:p[1],en:0}]));
+  $('#cardGrid').innerHTML=cards.map((c,k)=>`<button class="mcard" data-id="${c.id}" aria-label="Thẻ ${k+1}"><span class="in"><span class="face front">?</span><span class="face back ${c.en?'en':''}">${esc(c.txt)}</span></span></button>`).join('');
+  $$('#cardGrid .mcard').forEach(c=>c.onclick=()=>flip(c));
+  memHint();
+}
+function memHint(){$('#memHint').innerHTML=`Lượt của <b style="color:${COLORS[S.turn]}">${CARS[S.turn]} ${esc(S.names[S.turn])}</b>: lật 2 thẻ. Ghép đúng +1 điểm và chơi tiếp; sai thì chuyển lượt. Còn ${pairsLeft} cặp.`}
+function flip(c){
+  if(lock||c.classList.contains('flip')||c.classList.contains('got'))return;
+  c.classList.add('flip');tone(700,.06,'triangle',.12);flipped.push(c);
+  if(flipped.length<2)return;
+  lock=true;const [a,b]=flipped;
+  if(a.dataset.id===b.dataset.id){
+    setTimeout(()=>{a.classList.add('got');b.classList.add('got');a.disabled=b.disabled=true;addPts(S.turn,1);sfx.ok();pairsLeft--;flipped=[];lock=false;memHint();
+      if(!pairsLeft){confetti(200);sfx.win();setTimeout(()=>toast('Hoàn thành! Chọn Unit để chơi ván mới'),300)}},450);
+  } else {
+    setTimeout(()=>{sfx.bad();a.classList.remove('flip');b.classList.remove('flip');flipped=[];lock=false;nextTurn();memHint()},1100);
+  }
+}
+
+/* =================== SENTENCE BUILDER =================== */
+let sentQueue=[],cur=null,built=[],bT=null,bLeft=45,bDone=0;
+function stopTimer(){clearInterval(bT);bT=null}
+function newBuilder(){sentQueue=shuffle(SENT);bDone=0;nextSentence()}
+function nextSentence(){
+  if(!sentQueue.length)sentQueue=shuffle(SENT);
+  cur=sentQueue.pop();built=[];bDone++;
+  const words=cur.split(' ');
+  let order=shuffle(words.map((w,i)=>({w,i})));
+  if(order.every((o,k)=>o.i===k))order=order.reverse();
+  $('#pool').innerHTML=order.map(o=>`<button class="tile" data-i="${o.i}">${esc(o.w)}</button>`).join('');
+  $$('#pool .tile').forEach(t=>t.onclick=()=>takeTile(t));
+  $('#slot').innerHTML='<span class="hint">Chạm vào các mảnh từ bên dưới theo đúng thứ tự…</span>';$('#slot').className='slot';
+  $('#bAns').classList.add('hidden');$('#bCheck').disabled=false;
+  $('#bTurn').innerHTML=`Lượt của <b style="color:${COLORS[S.turn]}">${CARS[S.turn]} ${esc(S.names[S.turn])}</b> · đúng được +2 điểm.`;
+  $('#bCount').textContent=`Câu ${bDone}`;
+  bLeft=45;$('#bTimer').textContent=bLeft;$('#bTimer').classList.remove('low');stopTimer();
+  bT=setInterval(()=>{bLeft--;$('#bTimer').textContent=bLeft;$('#bTimer').classList.toggle('low',bLeft<=10);if(bLeft<=10&&bLeft>0)sfx.tick();if(bLeft<=0){stopTimer();sfx.bad();showAns('⏰ Hết giờ!')}},1000);
+}
+function takeTile(t){if(t.dataset.used)return;tone(650,.05,'triangle',.12);if(!built.length)$('#slot').innerHTML='';
+  built.push({i:+t.dataset.i,w:t.textContent,el:t});t.dataset.used=1;t.style.visibility='hidden';
+  const s=document.createElement('button');s.className='tile';s.textContent=t.textContent;s.onclick=()=>{const k=[...$('#slot').children].indexOf(s);untake(k)};$('#slot').appendChild(s);$('#slot').className='slot'}
+function untake(k){const it=built[k];if(!it)return;built.splice(k,1);it.el.style.visibility='';delete it.el.dataset.used;$('#slot').children[k].remove();if(!built.length)$('#slot').innerHTML='<span class="hint">Chạm vào các mảnh từ bên dưới theo đúng thứ tự…</span>'}
+$('#bUndo').onclick=()=>untake(built.length-1);
+$('#bCheck').onclick=()=>{
+  const words=cur.split(' ');if(built.length<words.length){toast('Hãy dùng hết các mảnh từ');return}
+  const ok=built.map(b=>b.w).join(' ')===cur;
+  if(ok){stopTimer();$('#slot').className='slot ok';addPts(S.turn,2);sfx.ok();confetti();$('#bCheck').disabled=true;showAns('✔ Chính xác! +2',true)}
+  else{$('#slot').className='slot no';sfx.bad();setTimeout(()=>{$('#slot').className='slot'},500);toast('Chưa đúng – thử lại nhé!')}
+};
+$('#bShow').onclick=()=>{stopTimer();showAns('Đáp án:')};
+function showAns(lead){$('#bAns').innerHTML=`<b>${lead}</b> ${esc(cur.replace(/ ([?.!])/g,'$1'))}`;$('#bAns').classList.remove('hidden');$('#bCheck').disabled=true}
+$('#bNext').onclick=()=>{nextTurn();nextSentence()};
+
+/* init */
+renderHome();
+</script>
+</body>
+</html>
